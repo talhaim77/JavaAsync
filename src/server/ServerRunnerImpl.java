@@ -15,6 +15,7 @@ public class ServerRunnerImpl implements ServerRunner {
         System.out.println("Listening server port:" + PORT);
         TcpServer server = new TcpServer(PORT);
         LightestPathsDijkImpl findLightestPaths = new LightestPathsDijkImpl();
+
 //        TraversableMatrix tMatrix = new TraversableMatrix(new Matrix(null));
 
         try {

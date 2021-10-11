@@ -22,16 +22,6 @@ public class TraversableMatrix implements Traversable<Index> {
         this.matrix = matrix;
     }
 
-//    @Override
-//    public List<List<Index>> runAlgo(TraversableMatrix matrix, Index start) {
-//        Assignments1<Index> localDFS = new Assignments1<>();
-//        matrix.setStartIndex(new Index(0 ,0));
-//        List<List<Index>> listOfComponents = localDFS.traverse(matrix);
-//        for (List<Index> singles: listOfComponents) {
-//            System.out.println(singles);
-//        }
-//        return listOfComponents;
-//    }
 
     public Index getStartIndex() {
         return startIndex;

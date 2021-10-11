@@ -1,6 +1,7 @@
 import model.Index;
+import model.TraversableMatrix;
 import tasks.LightestPathTask;
-
+import tasks.GetOnesTask;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,16 +19,16 @@ public class Client {
         ObjectOutputStream toServer = new ObjectOutputStream(outputStream);
         ObjectInputStream fromServer = new ObjectInputStream(inputStream);
 
-////         sending #1 matrix
-//        int[][] primitiveMatrix = {
-//                {1, 0, 1},
-//                {0, 1, 0},
-//                {1, 0, 1},
-//        };
-//        toServer.writeObject(TraversableMatrix.T_NAME);
-//        toServer.writeObject(primitiveMatrix);
+//         sending #1 matrix
+        int[][] primitiveMatrix = {
+                {1, 0, 1},
+                {0, 1, 0},
+                {1, 0, 1},
+        };
+        toServer.writeObject(GetOnesTask.T_NAME);
+        toServer.writeObject(primitiveMatrix);
 //         should print [(1,2), (2,2), (0,0), (1,0), (2,0)]
-//        System.out.println(fromServer.readObject());
+        System.out.println(fromServer.readObject());
 
         int[][] primitiveMatrix2 = {
                 {100, 100, 100},
