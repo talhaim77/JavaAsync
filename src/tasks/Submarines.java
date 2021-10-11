@@ -1,6 +1,7 @@
 package tasks;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import model.*;
 
@@ -48,15 +49,20 @@ public class Submarines<T> {
 
                 boolean isContinue = true;
                 for (Node<T> singleNode : singleThreadLocalSet.get()) {
-                    if (isContinue == false)
+                    if (!isContinue)
                         break;
                     Index tmpIdx = (Index) singleNode.getData();
                     Collection<Index> diagNeighbors;
                     if( tmpIdx.getRow() % 2 == 0 ){
                         diagNeighbors = matrix.getOnlyDiagonalNeighbors(tmpIdx);
                         for (Index index : diagNeighbors){
-                            if(singleThreadLocalSet.get().stream().filter(idx -> idx.equals(index)) != null)
-                                isContinue = someGraph.isVerticalAndHorizontalNeighbors(tmpIdx, singleThreadLocalSet.get());
+                            for(Node<T> existNodes : singleThreadLocalSet.get()) {
+                                if(existNodes.getData().equals(index)){
+                                    isContinue = someGraph.isVerticalAndHorizontalNeighbors(tmpIdx,
+                                            singleThreadLocalSet.get());
+                                    break;
+                                }
+                            }
                             if (!isContinue)
                                 break;
                         }

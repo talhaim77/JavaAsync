@@ -2,10 +2,9 @@ package tasks;
 
 import java.util.*;
 import model.*;
-import tmp.getOnes;
 
 
-public class getOnesTask<T> implements getOnes {
+public class getOnesTask<T> {
     final ThreadLocal<Stack<Node<T>>> threadLocalStack = ThreadLocal.withInitial(() -> new Stack<Node<T>>()); // lambda expression
 
     // all the visited nodes , no duplicate.
@@ -54,12 +53,4 @@ public class getOnesTask<T> implements getOnes {
         return allConnectedComponents;
     }
 
-    public List<List<T>> runAlgo(Traversable<T> matrix, Index start) {
-        return this.traverse(matrix);
-    }
-
-    @Override
-    public List<List<Index>> runAlgo(Matrix matrix, Index start) {
-        return null;
-    }
 }
