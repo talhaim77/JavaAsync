@@ -11,6 +11,10 @@ public class GetOnesTask<T> implements Task {
     public static final String T_NAME = "Task-1";
     private final FindOnes findOnes;
 
+    public GetOnesTask(FindOnes findOnes) {
+        this.findOnes = findOnes;
+    }
+
     @Override
     public String getKey() {
         return T_NAME;
