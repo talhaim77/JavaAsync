@@ -39,7 +39,12 @@ public class TraversableMatrix implements Traversable<Index> {
     public Node<Index> getOrigin() throws NullPointerException{
         if (this.startIndex == null) throw new NullPointerException("start index is not initialized");
         return new Node<>(this.startIndex);
+    }
 
+    @Override
+    public DijkNode<Index> getDijkOrigin() {
+        if (this.startIndex == null) throw new NullPointerException("start index is not initialized");
+        return new DijkNode<>(this.startIndex, Integer.MAX_VALUE);
     }
 
     @Override
@@ -102,6 +107,11 @@ public class TraversableMatrix implements Traversable<Index> {
         return this.matrix.getNeighbors(someNode.getData())
                 .stream().filter(index -> matrix.getValue(index)==1).map(index -> new Node<>(index,someNode))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getValue(DijkNode<Index> dijkNode) {
+        return matrix.getValue((Index) dijkNode.getData());
     }
 
     @Override

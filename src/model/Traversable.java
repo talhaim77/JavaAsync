@@ -8,10 +8,12 @@ import java.util.List;
  */
 public interface Traversable<T> {
     public Node<T> getOrigin();
+    public DijkNode<T> getDijkOrigin();
     public Collection<Node<T>>  getReachableNodes(Node<T> someNode);
     public Collection<Node<T>> getReachableNodesDiagonal(Node<T> someNode);
     public Node<T> getNodeByIndex(Index index);
 //    public boolean isVerticalAndHorizontalNeighbors(Node<Index> node, List<Node<Index>> l);
+    public int getValue(DijkNode<T> dijkNode);
 
     boolean isVerticalAndHorizontalNeighbors(Index tmpIdx, List<Node<T>> nodes);
 

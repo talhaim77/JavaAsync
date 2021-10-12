@@ -3,12 +3,14 @@ package tasks;
 import model.Index;
 import model.Matrix;
 import services.LightestPaths;
+import tmp.TraversableWeightedMatrix;
 
 import java.io.IOException;
 import java.io.ObjectInput;
+import java.util.Collection;
 import java.util.List;
 
-public class LightestPathTask implements Task{
+public class LightestPathTask<T> implements Task{
     public static final String T_NAME = "Lightest-Path-Dijkstra";
     private final LightestPaths lightestPathsAlgo;
 
@@ -24,10 +26,12 @@ public class LightestPathTask implements Task{
         return getLightestPaths(primitiveMatrix, source, destination);
     }
 
-    private List<Index> getLightestPaths(int[][] primitiveMatrix, Index start, Index end) {
+    private Collection<List<T>> getLightestPaths(int[][] primitiveMatrix, Index start, Index end) {
         Matrix matrix = new Matrix(primitiveMatrix);
+        TraversableWeightedMatrix traversableWeightedMatrix = new TraversableWeightedMatrix(matrix);
+        traversableWeightedMatrix.setStartIndex(start);
 //        return this.lightestPathService.getLightestPaths(matrix, start, end);
-        return this.lightestPathsAlgo.runAlgo(matrix, start, end);
+        return this.lightestPathsAlgo.runAlgo(traversableWeightedMatrix, start, end);
     }
 
 
