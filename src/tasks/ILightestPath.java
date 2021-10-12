@@ -1,7 +1,7 @@
 package tasks;
 
 import model.Index;
-import model.IndexStatus;
+import tmp.IndexStatus;
 import model.Matrix;
 
 import java.util.List;

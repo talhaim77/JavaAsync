@@ -1,4 +1,6 @@
-package model;
+package tmp;
+
+import model.Index;
 
 public class IndexStatus {
     private Index prev;
