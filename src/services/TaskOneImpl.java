@@ -1,11 +1,12 @@
 package services;
 
 import model.*;
-import tasks.GetOnesTask;
 
 import java.util.*;
 
-public class FindOnesImpl<T> implements FindOnes {
+public class TaskOneImpl<T> {
+    public static final String T_NAME = "Task-1";
+
     final ThreadLocal<Stack<Node<T>>> threadLocalStack = ThreadLocal.withInitial(() -> new Stack<Node<T>>()); // lambda expression
 
     // all the visited nodes , no duplicate.
@@ -55,12 +56,12 @@ public class FindOnesImpl<T> implements FindOnes {
 
 
 
-    @Override
-    public List<List<T>> runAlgo(int[][] primitiveMatrix, Index source) {
-        TraversableMatrix tMatrix = new TraversableMatrix(new Matrix(primitiveMatrix));
-        tMatrix.setStartIndex(new Index(0,0));
-        return this.traverse((Traversable<T>)tMatrix);
-    }
+//    @Override
+//    public List<List<T>> runAlgo(int[][] primitiveMatrix) {
+//        TraversableMatrix tMatrix = new TraversableMatrix(new Matrix(primitiveMatrix));
+//        tMatrix.setStartIndex(new Index(0,0));
+//        return this.traverse((Traversable<T>)tMatrix);
+//    }
 
 
 

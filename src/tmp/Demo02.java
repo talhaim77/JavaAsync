@@ -16,22 +16,26 @@ public class Demo02 {
 //                {1, 1, 1, 0},
 //                {1, 0, 1, 0}
 
-
-                {0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 1, 1, 1, 1, 1, 1, 0},
-                {0, 1, 0, 1, 1, 0, 1, 0},
-                {0, 1, 0, 1, 1, 0, 1, 0},
-                {1, 1, 1, 1, 1, 1, 1, 0},
-                {0, 1, 1, 1, 1, 0, 1, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 1, 0, 1, 1},
+                {1, 1, 0, 1, 1},
+                {1, 1, 0, 1, 1},
+                {1, 1, 0, 1, 1},
+                {1, 1, 0, 1, 1},
+//                {0, 0, 0, 0, 0, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0, 0, 0},
+//                {0, 1, 1, 1, 1, 1, 1, 0},
+//                {0, 1, 0, 1, 1, 0, 1, 0},
+//                {0, 1, 0, 1, 1, 0, 1, 0},
+//                {1, 1, 1, 1, 1, 1, 1, 0},
+//                {0, 1, 1, 1, 1, 0, 1, 0},
+//                {0, 0, 0, 0, 0, 0, 0, 0},
 
         };
         TraversableMatrix tMatrix = new TraversableMatrix(new Matrix(source));
         System.out.println(tMatrix);
         tMatrix.setStartIndex(new Index(0 ,0));
         ThreadLocalBFS<Index> localBFS = new ThreadLocalBFS<>();
-        List<List<Index>> path = localBFS.traverse(tMatrix, new Index(2 ,4), new Index(5,1));
+        List<List<Index>> path = localBFS.traverse(tMatrix, new Index(0 ,1), new Index(0,3));
         for (List<Index> singles: path) {
             System.out.println(singles);
         }

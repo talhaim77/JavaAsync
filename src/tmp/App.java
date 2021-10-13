@@ -1,3 +1,5 @@
+package tmp;
+
 import server.ServerRunnerImpl;
 
 public class App {

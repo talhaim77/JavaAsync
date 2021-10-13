@@ -9,7 +9,9 @@ import model.*;
  * TLS- Thread Local Storage
  */
 public class ThreadLocalBFS<T> {
-//    final ThreadLocal<Queue<Node<T>>> threadLocalQueue = ThreadLocal.withInitial
+    public static final String T_NAME = "Task-2";
+
+    //    final ThreadLocal<Queue<Node<T>>> threadLocalQueue = ThreadLocal.withInitial
     final ThreadLocal<Queue<Node<T>>> threadLocalQueue = ThreadLocal.withInitial(() -> new LinkedList<Node<T>>()); // lambda expression
 
     //Set that contain the visited nodes
@@ -57,7 +59,8 @@ public class ThreadLocalBFS<T> {
                     }
                 }
         }
-        List<List<T>> allShortestPathToDes = allShortestPaths(pathsToDestination);
+        List<List<T>> allShortestPathToDes;
+        allShortestPathToDes = allShortestPaths(pathsToDestination);
         return allShortestPathToDes;
     }
 

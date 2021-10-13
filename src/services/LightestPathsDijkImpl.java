@@ -1,17 +1,22 @@
 package services;
 
+import model.Edge;
 import model.Index;
 import model.Matrix;
+import model.Node;
 
 import java.util.*;
 
-public class LightestPathsDijkImpl implements LightestPaths {
-    private int n;
+public class LightestPathsDijkImpl {
+    public static final String T_NAME = "Task-4";
+
+    private int sizeOfIndexes;
     private List<Edge>[] graph;
+//    final ThreadLocal<Set<Node<T>>> threadLocalSetVisited = ThreadLocal.withInitial(LinkedHashSet::new);
 
     public LightestPathsDijkImpl() {
-        graph = new ArrayList[n];
-        for (int x = 0; x < n; x++) {
+        graph = new ArrayList[sizeOfIndexes];
+        for (int x = 0; x < sizeOfIndexes; x++) {
             graph[x] = new ArrayList<>();
         }
     }
@@ -27,84 +32,101 @@ public class LightestPathsDijkImpl implements LightestPaths {
         return new Index((val / colSize), (val % colSize));
     }
 
-    private List<Index> distDijkstra(Matrix mat, Index start, Index end) {
-        this.n = mat.getAll().size();
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-        boolean[] check = new boolean[n];
-        Map<Index, Index> parentMap = new HashMap<>();
-        Edge[] distance = new Edge[n];
+    public List<List<Index>> distDijkstra(Matrix mat, Index start, Index end) {
+        this.sizeOfIndexes = mat.getAll().size();
+        final ThreadLocal<PriorityQueue<Edge>> pq = ThreadLocal.withInitial(() -> new PriorityQueue<>());
+        final ThreadLocal<boolean[]> check = ThreadLocal.withInitial(() -> new boolean[this.sizeOfIndexes]);
+        final ThreadLocal<Map<Index, List<Index>>> parentMap = ThreadLocal.withInitial(() -> new HashMap<>());
+        final ThreadLocal<Edge[]> distance = ThreadLocal.withInitial(() -> new Edge[this.sizeOfIndexes]);
 
-        for (int x = 0; x < n; x++) {
+        for (int x = 0; x < sizeOfIndexes; x++) {
             if (x == calcIndexValue(start, mat)) {
-                distance[x] = new LightestPathsDijkImpl.Edge(x, 0);
-                parentMap.put(calcIndexByVal(x, mat), null);
+                distance.get()[x] = new Edge(x, 0);
+                parentMap.get().put(calcIndexByVal(x, mat), null);
             } else {
-                distance[x] = new LightestPathsDijkImpl.Edge(x, Integer.MAX_VALUE);
+                distance.get()[x] = new Edge(x, Integer.MAX_VALUE);
             }
-            pq.add(distance[x]);
+            pq.get().add(distance.get()[x]);
         }
-        while (!pq.isEmpty()) {
-            LightestPathsDijkImpl.Edge edge = pq.poll();
-            Index currentIndex = this.calcIndexByVal(edge.v, mat);
+        while (!pq.get().isEmpty()) {
+            Edge edge = pq.get().poll();
+            Index currentIndex = this.calcIndexByVal(edge.getIndex(), mat);
             for (Index idx : mat.getNeighbors(currentIndex)) {
                 int nextVal = calcIndexValue(idx, mat);
-                if (!check[nextVal] && distance[nextVal].weight > distance[edge.v].weight + mat.getValue(idx)) {
-                    distance[nextVal].weight = distance[edge.v].weight + mat.getValue(idx);
-                    parentMap.put(idx, currentIndex);
-                    pq.remove(distance[nextVal]);
-                    pq.add(distance[nextVal]);
+                if (!check.get()[nextVal] && distance.get()[nextVal].getWeight() >=
+                        distance.get()[edge.getIndex()].getWeight() + mat.getValue(idx)) {
+                    distance.get()[nextVal].setWeight(distance.get()[edge.getIndex()].getWeight() + mat.getValue(idx));
+                    if(parentMap.get().containsKey(idx)){
+                        parentMap.get().get(idx).add(currentIndex);
+                    }
+                    else{
+                        parentMap.get().put(idx,new LinkedList<>());
+                        parentMap.get().get(idx).add(currentIndex);
+                    }
+
+                    pq.get().remove(distance.get()[nextVal]);
+                    pq.get().add(distance.get()[nextVal]);
                 }
+
             }
-            check[edge.v] = true;
+            check.get()[edge.getIndex()] = true;
         }
-        List<Index> path = new ArrayList<>();
-        Index parentIndex = parentMap.get(end);
-        while (parentIndex != null) {
-            path.add(end);
-            end = new Index(parentIndex);
-            parentIndex = parentMap.get(end);
+        // change the reverse parent map to be List<Index> and return
+        // List<List<Index>>
+        List<List<Index>> path = new ArrayList<>();
+        List<Index> parentIndexes = parentMap.get().get(end);
+        System.out.println("");
+        for(Index idx: parentIndexes){
+            findAllPaths(idx);
         }
-        path.add(end);
-//        System.out.println(Arrays.toString(distance));
-        Collections.reverse(path);
-//        for (int i = 0; i < path.size(); i++) {
-//            System.out.print(path.get(i) + " ");
-//        }
-//        System.out.println(Arrays.toString(path));
+//        for()
+//        for(Index index: parentIndexes){
+//            List<Index> singlePath = new ArrayList<>();
+//                while(!stopLoop){
+//                    parentForEach = parentMap.get().get(index)
+//                    singlePath.add()
+//                }
+//                path.add()
+////                path.add(end);
+////                end = new Index(index);
+////                parentIndex = parentMap.get().get(end);
+//
+//            }
         return path;
     }
 
-    @Override
-    public List<Index> runAlgo(Matrix matrix, Index start, Index end) {
-        return this.distDijkstra(matrix, start, end);
+    private List<List<Index>> findAllPaths(ThreadLocal<Map<Index, List<Index>>> map, Index idx, List<List<Index>> path) {
+        if (map.get().get(idx) == null)
+            return path;
+        if (map.get().get(idx).size() > 1){
+            List<Index> newPath = new LinkedList<>();
+
+            for(Index neighbor: map.get().get(idx))  {
+                newPath.add(neighbor);
+                findAllPaths(map, neighbor, newPath);
+            }
+        } else {
+
+        }
+        return path;
     }
+//        path.add(end);
+//        System.out.println(Arrays.toString(distance));
+//        Collections.reverse(path);
+//        for (int i = 0; i < path.size(); i++) {
+//            System.out.print(path.get(i) + " ");
+//        }
 
-    private class Edge implements Comparable<Edge> {
-        int v, weight;
 
-        public Edge(int v, int weight) {
-            this.v = v;
-            this.weight = weight;
-        }
-
-        @Override
-        public int compareTo(Edge o) {
-            return Integer.compare(this.weight, o.weight);
-        }
-
-        @Override
-        public String toString() {
-            return weight + "";
-        }
-
-    }
 
     public static void main(String[] args) {
-        int[][] mat =     new int[][]{
-                new int[]{100, 100, 100},
-                new int[]{500, 900, 300}};
+        int[][] mat = {
+                {10,  10,  10},
+                {10,  300, 10},
+                {10,  10,   5}
+                };
         Matrix matrix = new Matrix(mat);
         LightestPathsDijkImpl dijkstra_pq = new LightestPathsDijkImpl();
-        dijkstra_pq.distDijkstra(matrix, new Index(1,0), new Index(1,2));
+        dijkstra_pq.distDijkstra(matrix, new Index(0,0), new Index(2,2));
     }
 }

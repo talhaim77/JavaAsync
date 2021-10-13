@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import model.*;
 
 public class Submarines<T> {
+    public static final String T_NAME = "Task-3";
     final ThreadLocal<Stack<Node<T>>> threadLocalStack = ThreadLocal.withInitial(() -> new Stack<Node<T>>()); // lambda expression
 
     // all the visited nodes , no duplicate.
